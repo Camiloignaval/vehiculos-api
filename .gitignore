@@ -1,0 +1,100 @@
+# ======================================================
+# 📦 NODE / GENERAL
+# ======================================================
+node_modules/
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+pnpm-debug.log*
+package-lock.json
+.pnpm-store/
+.env
+.env.local
+.env.*.local
+
+# lockfiles en subproyectos
+api/node_modules/
+api/package-lock.json
+client/node_modules/
+client/package-lock.json
+
+# ======================================================
+# ⚙️ VITE / REACT
+# ======================================================
+dist/
+build/
+.vite/
+.cache/
+*.local
+
+# ======================================================
+# 🧰 EDITOR / OS / TOOLING
+# ======================================================
+.DS_Store
+Thumbs.db
+.idea/
+.vscode/
+*.swp
+*.swo
+*.tmp
+*.bak
+*.log
+*.pid
+*.seed
+
+# ======================================================
+# 🐳 DOCKER
+# ======================================================
+docker-compose.override.yml
+.docker/
+*.tar
+
+# ======================================================
+# 🧪 TEST / COVERAGE
+# ======================================================
+coverage/
+.nyc_output/
+jest-html-reporters-*
+
+# ======================================================
+# 📸 UPLOADS / TEMP
+# ======================================================
+uploads/
+tmp/
+temp/
+*.jpg
+*.jpeg
+*.png
+*.gif
+
+# ======================================================
+# 💻 ENV / CONFIG PRIVADOS
+# ======================================================
+# MongoDB, Cloudinary, tokens, etc.
+api/.env
+server/.env
+frontend/.env
+backend/.env
+.env.production
+.env.development
+.env.test
+.env.local
+
+# ======================================================
+# 🔐 DEPLOY / BUILD
+# ======================================================
+*.tgz
+*.zip
+*.tar.gz
+*.env.backup
+*.pem
+*.crt
+*.key
+
+# ======================================================
+# ⚡ IDE / SISTEMA
+# ======================================================
+*.iml
+*.sublime-project
+*.sublime-workspace
+*.code-workspace
