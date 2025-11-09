@@ -1,10 +1,19 @@
+// src/routes/expenses.js
 import { Router } from "express";
 import mongoose from "mongoose";
 import Expense from "../models/Expense.js";
 import { authMiddleware } from "./auth.js";
+import { DateTime } from "luxon";
 
 const router = Router();
 router.use(authMiddleware);
+
+const CL_ZONE = "America/Santiago";
+const toUTCfromChileYMD = (ymd) =>
+  DateTime.fromFormat(ymd, "yyyy-LL-dd", { zone: CL_ZONE })
+    .startOf("day")
+    .toUTC()
+    .toJSDate();
 
 // Listar gastos (opcional: filtrar por vehículo)
 router.get("/", async (req, res) => {
@@ -18,14 +27,23 @@ router.get("/", async (req, res) => {
   }
 });
 
-// Crear gasto
+// Crear gasto  👇 normaliza la fecha
 router.post("/", async (req, res) => {
   try {
     const { vehicleId, date, name, amount } = req.body;
     if (!vehicleId || !date || !name || amount == null) {
       return res.status(400).json({ error: "Faltan campos requeridos" });
     }
-    const item = await Expense.create({ vehicleId, date, name, amount });
+
+    // date llega como "YYYY-MM-DD" desde el front
+    const jsDate = toUTCfromChileYMD(String(date));
+
+    const item = await Expense.create({
+      vehicleId,
+      date: jsDate,
+      name,
+      amount,
+    });
     res.status(201).json(item);
   } catch (e) {
     res.status(400).json({ error: e.message });
@@ -47,12 +65,12 @@ router.delete("/:id", async (req, res) => {
   }
 });
 
+// Resumen por vehículo
 router.get("/summary", async (req, res) => {
   try {
     const rows = await Expense.aggregate([
       { $group: { _id: "$vehicleId", total: { $sum: "$amount" } } },
     ]);
-    // normalizamos a diccionario
     const map = {};
     for (const r of rows) map[String(r._id)] = r.total || 0;
     res.json(map);
